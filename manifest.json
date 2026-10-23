@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Stream Recorder",
+  "version": "5.2",
+  "description": "Профессиональная запись стримов Twitch и Kick",
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage",
+    "webRequest",
+    "downloads",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "*://*.twitch.tv/*",
+    "*://*.ttvnw.net/*",
+    "*://*.hls.ttvnw.net/*",
+    "*://*.kick.com/*",
+    "*://*.playback.kick.com/*",
+    "*://*.cloudfront.net/*",
+    "*://*.amazonaws.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon/icon16.png",
+    "32": "icon/icon32.png",
+    "48": "icon/icon48.png",
+    "128": "icon/icon128.png"
+  },
+  "action": {
+    "default_title": "Stream Recorder",
+    "default_icon": {
+      "16": "icon/icon16.png",
+      "32": "icon/icon32.png",
+      "48": "icon/icon48.png",
+      "128": "icon/icon128.png"
+    }
+  },
+  "commands": {
+    "start-recording": {
+      "suggested_key": { "default": "Ctrl+Shift+R" },
+      "description": "Начать запись"
+    },
+    "stop-recording": {
+      "suggested_key": { "default": "Ctrl+Shift+S" },
+      "description": "Остановить запись"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["onboarding.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

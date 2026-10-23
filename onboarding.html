@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stream Recorder — Настройка</title>
+  <style>
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; background: #0e0e10; color: #efeff1;
+      font-family: "Inter", "Segoe UI", sans-serif; text-align: center; padding: 20px;
+    }
+    .card {
+      max-width: 480px; background: #18181b; border: 1px solid #2f2f35;
+      border-radius: 8px; padding: 32px 28px;
+    }
+    h1 { color: #9147ff; font-size: 22px; margin: 0 0 12px; }
+    p { color: #adadb8; font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+    button {
+      background: #9147ff; color: #fff; border: none; border-radius: 4px;
+      padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: 0.15s;
+    }
+    button:hover { background: #772ce8; box-shadow: 0 0 16px rgba(145,71,255,0.5); }
+    .status { margin-top: 16px; font-size: 12px; color: #adadb8; min-height: 18px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Добро пожаловать в Stream Recorder</h1>
+    <p>Чтобы расширение могло сохранять записи, выберите папку на компьютере. Доступ к папке сохранится между сессиями.</p>
+    <button id="chooseFolder">Выбрать папку и разрешить</button>
+    <div id="status" class="status"></div>
+  </div>
+  <script src="onboarding.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stream Recorder</title>
+  <link rel="stylesheet" href="recorder.css" />
+</head>
+<body class="theme-twitch">
+  <div class="app-wrapper">
+    
+    <div class="platform-switcher">
+      <button id="platformTwitch" class="platform-btn active">Twitch</button>
+      <button id="platformKick" class="platform-btn">Kick</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="record" data-ru="Запись" data-en="Record">Запись</button>
+      <button class="tab-btn" data-tab="settings" data-ru="Настройки" data-en="Settings">Настройки</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-record">
+      <div class="header">
+        <span class="title">Stream Recorder</span>
+        <button id="langToggle" class="lang-btn">ru</button>
+      </div>
+
+      <div class="row-selects">
+        <div class="col-select">
+          <div class="label-row">
+            <label class="label" data-ru="Выберите вкладку:" data-en="Select tab:">Выберите вкладку:</label>
+            <button id="refreshTabsBtn" class="refresh-btn" title="Обновить список вкладок">↻</button>
+          </div>
+          <div class="custom-select" id="tabSelectWrapper">
+            <div class="select-trigger" id="tabTrigger">—</div>
+            <div class="select-options" id="tabOptions"></div>
+          </div>
+        </div>
+        <div class="col-select">
+          <label class="label" data-ru="Качество" data-en="Quality">Качество</label>
+          <div class="custom-select" id="qualitySelectWrapper">
+            <div class="select-trigger" id="qualityTrigger" data-ru="Ожидание..." data-en="Waiting...">Ожидание...</div>
+            <div class="select-options" id="qualityOptions"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint" id="hlsHint" data-ru="Откройте стрим, чтобы расширение нашло HLS-поток" data-en="Open a stream so the extension can find HLS">
+        Откройте стрим, чтобы расширение нашло HLS-поток
+      </div>
+
+      <div class="controls">
+        <button id="startBtn" class="btn start" data-ru="СТАРТ" data-en="START">СТАРТ</button>
+        
+        <div class="tooltip-wrapper">
+          <button id="endStreamBtn" class="btn end-stream" aria-label="Record until stream ends">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="4" fill="#eb0400"/>
+            </svg>
+          </button>
+          <span class="tooltip" data-ru="Запись до конца стрима" data-en="Record until stream ends">Запись до конца стрима</span>
+        </div>
+        
+        <button id="stopBtn" class="btn stop" data-ru="СТОП" data-en="STOP" disabled>СТОП</button>
+      </div>
+
+      <div id="progress" class="progress-container" style="display:none;">
+        <div class="progress-text">
+          <span id="progTimeSize">00:00 · 0 MB</span>
+          <span id="progStats">0 segs · 0 failed</span>
+        </div>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-settings">
+      <div class="header"><span class="title" data-ru="Настройки" data-en="Settings">Настройки</span></div>
+
+      <label class="label" data-ru="Папка для сохранения:" data-en="Save folder:">Папка для сохранения:</label>
+      <div class="folder-row">
+        <!-- Убрали data-ru, чтобы переводчик не затирал имя папки -->
+        <span id="folderName" class="folder-name">Не выбрана</span>
+        <button id="pickFolderBtn" class="btn secondary outline" data-ru="Выбрать" data-en="Choose">Выбрать</button>
+      </div>
+
+      <label class="label" data-ru="Формат файла:" data-en="File format:">Формат файла:</label>
+      <div class="custom-select" id="formatSelectWrapper">
+        <div class="select-trigger" id="formatTrigger">.ts (без ремукса)</div>
+        <div class="select-options" id="formatOptions">
+          <div data-value="ts" data-ru=".ts (без ремукса)" data-en=".ts (no remux)">.ts (без ремукса)</div>
+          <div data-value="mp4" data-ru=".mp4 (ремукс)" data-en=".mp4 (remux)">.mp4 (ремукс)</div>
+        </div>
+      </div>
+
+      <label class="label" data-ru="Тема:" data-en="Theme:">Тема:</label>
+      <div class="custom-select" id="themeSelectWrapper">
+        <div class="select-trigger" id="themeTrigger" data-ru="Системная" data-en="System">Системная</div>
+        <div class="select-options" id="themeOptions">
+          <div data-value="auto" data-ru="Системная" data-en="System">Системная</div>
+          <div data-value="dark" data-ru="Тёмная" data-en="Dark">Тёмная</div>
+          <div data-value="light" data-ru="Светлая" data-en="Light">Светлая</div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <button id="exportBtn" class="btn secondary outline full" data-ru="Экспорт настроек" data-en="Export settings">Экспорт настроек</button>
+        <button id="importBtn" class="btn secondary outline full" data-ru="Импорт настроек" data-en="Import settings">Импорт настроек</button>
+        <input type="file" id="importInput" accept="application/json" style="display:none" />
+      </div>
+
+      <div class="hint" data-ru="Горячие клавиши: Ctrl+Shift+R — старт, Ctrl+Shift+S — стоп" data-en="Hotkeys: Ctrl+Shift+R — start, Ctrl+Shift+S — stop">
+        Горячие клавиши: Ctrl+Shift+R — старт, Ctrl+Shift+S — стоп
+      </div>
+    </div>
+  </div>
+
+  <script src="mux.min.js"></script>
+  <script src="recorder.js"></script>
+</body>
+</html>
